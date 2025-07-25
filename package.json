@@ -1,10 +1,11 @@
 {
   "name": "salary-checker",
   "version": "1.0.0",
-  "description": "A proxy server to scrape salarys using website - a Chrome Extension.",
+  "description": "A proxy server to scrape Glassdoor for a Chrome Extension.",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "postinstall": "npx puppeteer browsers install chrome"
   },
   "dependencies": {
     "axios": "^1.7.2",
