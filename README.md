@@ -1,0 +1,2 @@
+# salary-checker
+check salary
