@@ -31,9 +31,18 @@ app.get('/scrape', async (req, res) => {
     
     const page = await browser.newPage();
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36');
-    await page.goto(url, { waitUntil: 'networkidle2', timeout: 30000 });
+  // 1. Go to the URL and wait for the basic document to load
+    await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
+
+    // 2. Explicitly wait for the job listing selector to appear on the page
+    // This is the most reliable way to know the content is ready.
+    // We give it up to 25 seconds to appear after the initial page load.
+    const jobListingSelector = 'li.react-job-listing'; // Make sure this is still correct!
+    await page.waitForSelector(jobListingSelector, { timeout: 25000 });
     
+    // 3. Get the final page content
     const content = await page.content();
+    
     const $ = cheerio.load(content);
     const jobs = [];
 
